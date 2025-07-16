@@ -1,16 +1,14 @@
-// /api/fetchBusinessData.js
+// fetchBusinessData.js
+export default async function fetchBusinessData({ industry, city }) {
+  // 🔧 Future: Actual API fetch (e.g., Apollo.io, Google Maps, etc.)
 
-export async function fetchBusinessData(cleanQuery) {
-  // 📌 NOTE: Replace this with real API integration (like SerpApi, Clearbit, etc.)
-  // Abhi dummy data bhej raha hoon
+  if (!process.env.BUSINESS_API_KEY) {
+    console.warn("BUSINESS_API_KEY missing. Returning empty array.");
+    return []; // 👈 abhi ke liye khaali
+  }
+
+  // Baad me yahan real API call aayegi
   return [
-    {
-      company: "Example Biz Pvt Ltd",
-      email: "contact@examplebiz.com",
-      phone: "+91-1234567890",
-      website: "https://examplebiz.com",
-      location: cleanQuery,
-    },
+    // fetched data yahan
   ];
 }
-
