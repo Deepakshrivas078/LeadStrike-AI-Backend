@@ -1,18 +1,22 @@
-// /api/parseQuery.js
+// parseQuery.js
+export default async function parseQuery(query) {
+  // 🔧 Future: GPT API call yahan aayega
+  // ❌ Agar key nahi hai to fallback logic chalao
+  // ✅ Jab key daalega to auto work karega
 
-import OpenAI from 'openai';
+  if (!process.env.OPENAI_API_KEY) {
+    console.warn("OPENAI_API_KEY missing. Using fallback parser.");
+    // fallback static parse
+    const lower = query.toLowerCase();
+    let city = '';
+    let industry = '';
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    if (lower.includes("jaipur")) city = "Jaipur";
+    if (lower.includes("hotel")) industry = "hotel";
 
-export async function parseQuery(userQuery) {
-  const prompt = `User has typed: "${userQuery}". Convert this into a clean business search query. Example: "Mumbai ke t-shirt manufacturers ke contact details" → "t-shirt manufacturers in Mumbai"`;
+    return { industry, city };
+  }
 
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4',
-    messages: [{ role: 'user', content: prompt }],
-    temperature: 0.2,
-  });
-
-  return response.choices[0].message.content.trim();
+  // GPT logic — aayega jab key mile
+  return { industry: "default", city: "default" };
 }
-
