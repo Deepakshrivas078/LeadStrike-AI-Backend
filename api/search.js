@@ -1,26 +1,50 @@
-// /api/search.js
-
-import { parseQuery } from './parseQuery.js';
-import { fetchBusinessData } from './fetchBusinessData.js';
+import parseQuery from './parseQuery';
+import fetchBusinessData from './fetchBusinessData';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Only POST requests allowed' });
+    return res.status(405).json({ error: 'Only POST allowed' });
   }
 
   const { query } = req.body;
 
   if (!query) {
-    return res.status(400).json({ error: 'No query provided' });
+    return res.status(400).json({ error: 'Missing query' });
   }
 
   try {
-    const parsedQuery = await parseQuery(query);
-    const results = await fetchBusinessData(parsedQuery);
-    res.status(200).json({ data: results });
+    const parsed = await parseQuery(query);
+    const data = await fetchBusinessData(parsed);
+
+    res.status(200).json({ success: true, data });
   } catch (err) {
-    console.error('Search Error:', err);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
   }
 }
+import parseQuery from './parseQuery';
+import fetchBusinessData from './fetchBusinessData';
+
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Only POST allowed' });
+  }
+
+  const { query } = req.body;
+
+  if (!query) {
+    return res.status(400).json({ error: 'Missing query' });
+  }
+
+  try {
+    const parsed = await parseQuery(query);
+    const data = await fetchBusinessData(parsed);
+
+    res.status(200).json({ success: true, data });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
 
