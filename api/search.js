@@ -1,50 +1,29 @@
+// api/search.js
+
 import parseQuery from './parseQuery';
 import fetchBusinessData from './fetchBusinessData';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Only POST allowed' });
+    return res.status(405).json({ error: 'Only POST requests allowed' });
   }
 
   const { query } = req.body;
 
   if (!query) {
-    return res.status(400).json({ error: 'Missing query' });
+    return res.status(400).json({ error: 'Query missing' });
   }
 
   try {
-    const parsed = await parseQuery(query);
-    const data = await fetchBusinessData(parsed);
+    const parsed = await parseQuery(query);         // clean query
+    const data = await fetchBusinessData(parsed);   // get business info
 
-    res.status(200).json({ success: true, data });
+    return res.status(200).json({ success: true, data });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error in search:", err);
+    return res.status(500).json({ error: 'Server error' });
   }
 }
-import parseQuery from './parseQuery';
-import fetchBusinessData from './fetchBusinessData';
 
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Only POST allowed' });
-  }
-
-  const { query } = req.body;
-
-  if (!query) {
-    return res.status(400).json({ error: 'Missing query' });
-  }
-
-  try {
-    const parsed = await parseQuery(query);
-    const data = await fetchBusinessData(parsed);
-
-    res.status(200).json({ success: true, data });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
-  }
-}
 
 
