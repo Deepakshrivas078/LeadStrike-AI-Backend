@@ -6,7 +6,7 @@ import serviceAccount from '../../firebase-admin-config.json'; // yeh file tujhe
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://<YOUR_PROJECT_ID>.firebaseio.com' // isme apna firebase project url daal
+    databaseURL: 'https://<leadstrike-auth>.firebaseio.com' // isme apna firebase project url daal
   });
 }
 
